@@ -8,8 +8,8 @@ import type { Conversation } from '@/types/conversation';
  * turn string to DOM and parse out the relevant pieces
  */
 //first method (not working):
-export async function parseChatGPT(html: string): Promise<Conversation> {
-  /*const $ = cheerio.load(html);
+/*export async function parseChatGPT(html: string): Promise<Conversation> {
+  const $ = cheerio.load(html);
 
 
   //find conversation div by class
@@ -27,7 +27,7 @@ export async function parseChatGPT(html: string): Promise<Conversation> {
     content: conversationHtml,
     scrapedAt: new Date().toISOString(),
     sourceHtmlBytes: html.length,
-  };*/
+  };
 
   //OLD; function initially only consisted of the following
   return {
@@ -38,10 +38,10 @@ export async function parseChatGPT(html: string): Promise<Conversation> {
     sourceHtmlBytes: html.length,
   };
   
-} 
+}*/
 
 //second method:
-/*export async function parseChatGPT(html: string): Promise<Conversation> {
+export async function parseChatGPT(html: string): Promise<Conversation> {
   // Parse the HTML string into a DOM
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, 'text/html');
@@ -80,4 +80,4 @@ export async function parseChatGPT(html: string): Promise<Conversation> {
       sourceHtmlBytes: html.length,
     };
   }
-}*/
+}
