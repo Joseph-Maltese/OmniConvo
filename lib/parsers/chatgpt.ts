@@ -1,12 +1,13 @@
 import type { Conversation } from '@/types/conversation';
 //new import for cheerio
-import * as cheerio from 'cheerio';
+//import * as cheerio from 'cheerio';
 
 /**
  * Extracts a ChatGPT share page into a structured Conversation.
  * TODO jm: write logic here
  * turn string to DOM and parse out the relevant pieces
  */
+/*first method (not working):
 export async function parseChatGPT(html: string): Promise<Conversation> {
   const $ = cheerio.load(html);
 
@@ -36,5 +37,47 @@ export async function parseChatGPT(html: string): Promise<Conversation> {
     scrapedAt: new Date().toISOString(),
     sourceHtmlBytes: html.length,
   };
-  */
+  
+} */
+
+//second method:
+export async function parseChatGPT(html: string): Promise<Conversation> {
+  // Parse the HTML string into a DOM
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, 'text/html');
+
+  // Find the conversation div by class (all classes must match)
+  const conversationDiv = Array.from(doc.querySelectorAll('div')).find(div =>
+    div.className.includes('@thread-xl/thread:pt-header-height') &&
+    div.className.includes('flex') &&
+    div.className.includes('flex-col') &&
+    div.className.includes('text-sm') &&
+    div.className.includes('pb-25')
+  );
+
+  if (conversationDiv) {
+    // Remove all interactive elements
+    ['button', 'input', 'textarea', 'select'].forEach(selector => {
+      conversationDiv.querySelectorAll(selector).forEach(el => el.remove());
+    });
+
+    // Get the cleaned HTML
+    //const conversationHtml = conversationDiv.innerHTML;
+    const conversationHtml = `<div style="color: #6b7280;">${conversationDiv.innerHTML}</div>`;
+
+    return {
+      model: 'ChatGPT',
+      content: conversationHtml,
+      scrapedAt: new Date().toISOString(),
+      sourceHtmlBytes: html.length,
+    };
+  } else {
+    // Fallback if not found
+    return {
+      model: 'ChatGPT',
+      content: '',
+      scrapedAt: new Date().toISOString(),
+      sourceHtmlBytes: html.length,
+    };
+  }
 }
