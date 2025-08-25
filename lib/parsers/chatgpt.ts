@@ -18,7 +18,8 @@ export async function parseChatGPT(html: string): Promise<Conversation> {
   conversationDiv.find('button, input, textarea, select').remove();
 
   // Get the cleaned HTML
-  const conversationHtml = conversationDiv.html() || '';
+  //const conversationHtml = conversationDiv.html() || '';
+  const conversationHtml = `<div style="color: #6b7280;">${conversationDiv.html() || ''}</div>`;
 
   return {
     model: 'ChatGPT',
