@@ -1,3 +1,5 @@
+export const runtime = 'nodejs';
+
 import { NextRequest, NextResponse } from 'next/server';
 import { parseHtmlToConversation } from '@/lib/parsers';
 import { dbClient } from '@/lib/db/client';
