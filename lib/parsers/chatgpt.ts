@@ -1,16 +1,19 @@
-import type { Conversation } from '@/types/conversation';
+//
+'use server';
+export const runtime = 'nodejs';
 //new import for cheerio
-//import * as cheerio from 'cheerio';
+import {load} from 'cheerio';
 
+import type { Conversation } from '@/types/conversation';
 
 /**
  * Extracts a ChatGPT share page into a structured Conversation.
  * TODO jm: write logic here
  * turn string to DOM and parse out the relevant pieces
  */
-//first method (not working):
-/*export async function parseChatGPT(html: string): Promise<Conversation> {
-  const $ = cheerio.load(html);
+//first method
+export async function parseChatGPT(html: string): Promise<Conversation> {
+  const $ = load(html);
 
 
   //find conversation div by class
@@ -39,10 +42,10 @@ import type { Conversation } from '@/types/conversation';
     sourceHtmlBytes: html.length,
   };
   
-}*/
+}
 
 //second method:
-export async function parseChatGPT(html: string): Promise<Conversation> {
+/*export async function parseChatGPT(html: string): Promise<Conversation> {
   // Parse the HTML string into a DOM
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, 'text/html');
@@ -81,4 +84,4 @@ export async function parseChatGPT(html: string): Promise<Conversation> {
       sourceHtmlBytes: html.length,
     };
   }
-}
+}*/
