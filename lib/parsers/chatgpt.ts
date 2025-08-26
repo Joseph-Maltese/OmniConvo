@@ -1,6 +1,6 @@
 //
-'use server';
-//export const runtime = 'nodejs';
+//'use server';
+export const runtime = 'nodejs';
 //new import for cheerio
 import {load} from 'cheerio';
 
