@@ -35,13 +35,13 @@ export async function parseChatGPT(html: string): Promise<Conversation> {
   };
 
   //OLD; function initially only consisted of the following
-  return {
+  /*return {
     model: 'ChatGPT',
     //pass the input for content
     content: html,
     scrapedAt: new Date().toISOString(),
     sourceHtmlBytes: html.length,
-  };
+  };*/
   
 }
 
