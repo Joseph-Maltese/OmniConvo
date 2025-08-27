@@ -1,19 +1,56 @@
-//
-//'use server';
-//export const runtime = 'nodejs';
-//^moved to route.ts files
-//new import for cheerio
-import {load} from 'cheerio';
-
 import type { Conversation } from '@/types/conversation';
+import { JSDOM } from 'jsdom';
+
 
 /**
  * Extracts a ChatGPT share page into a structured Conversation.
  * TODO jm: write logic here
  * turn string to DOM and parse out the relevant pieces
  */
-//first method
 export async function parseChatGPT(html: string): Promise<Conversation> {
+  //document.querySelector('.\\@thread-xl\\/thread\\:pt-header-height');
+  
+  //parse html into DOM
+  const dom = new JSDOM(html);
+  const document = dom.window.document;
+
+  //select div containing the conversation with the appropriate query selector
+  const conversationDiv = document.querySelector('.\\@thread-xl\\/thread\\:pt-header-height');
+
+  //now that we have the conversationDiv, remove all interactive elements
+  if (conversationDiv) {
+    // Remove all interactive elements inside the conversation div
+    ['button', 'input', 'textarea', 'select'].forEach(selector => {
+      conversationDiv.querySelectorAll(selector).forEach(el => el.remove());
+    });
+
+    // Get the cleaned inner HTML
+    const conversationHtml = conversationDiv.innerHTML;
+
+    return {
+      model: 'ChatGPT',
+      content: conversationHtml,
+      scrapedAt: new Date().toISOString(),
+      sourceHtmlBytes: html.length,
+    };
+
+  }
+
+  else {
+    // Fallback if not found
+    return {
+      model: 'ChatGPT',
+      content: '',
+      scrapedAt: new Date().toISOString(),
+      sourceHtmlBytes: html.length,
+    };
+  }
+
+}
+//first method
+
+
+/*export async function parseChatGPT(html: string): Promise<Conversation> {
   const $ = load(html);
 
 
@@ -41,9 +78,9 @@ export async function parseChatGPT(html: string): Promise<Conversation> {
     content: html,
     scrapedAt: new Date().toISOString(),
     sourceHtmlBytes: html.length,
-  };*/
+  };
   
-}
+}*/
 
 //second method:
 /*export async function parseChatGPT(html: string): Promise<Conversation> {
