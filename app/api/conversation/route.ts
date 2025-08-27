@@ -69,6 +69,11 @@ export async function POST(req: NextRequest) {
     const file = formData.get('htmlDoc');
     const model = formData.get('model')?.toString() ?? 'ChatGPT';
 
+
+    console.log("File: " + file);
+    console.log("Model: " + model);
+
+
     // Validate input
     if (!(file instanceof Blob)) {
       return NextResponse.json({ error: '`htmlDoc` must be a file field' }, { status: 400 });
